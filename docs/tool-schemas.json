@@ -1,0 +1,2666 @@
+[
+  {
+    "name": "resolve_birthplace",
+    "description": "Resolve city/country to coordinates. May query configured external geocoder. Never select ambiguous places.",
+    "inputSchema": {
+      "$defs": {
+        "PlaceInput": {
+          "additionalProperties": false,
+          "properties": {
+            "city": {
+              "maxLength": 120,
+              "minLength": 1,
+              "pattern": "^[^\\x00-\\x1f\\x7f]+$",
+              "title": "City",
+              "type": "string"
+            },
+            "country": {
+              "maxLength": 120,
+              "minLength": 1,
+              "pattern": "^[^\\x00-\\x1f\\x7f]+$",
+              "title": "Country",
+              "type": "string"
+            },
+            "region": {
+              "anyOf": [
+                {
+                  "maxLength": 120,
+                  "minLength": 1,
+                  "pattern": "^[^\\x00-\\x1f\\x7f]+$",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Region"
+            }
+          },
+          "required": [
+            "city",
+            "country"
+          ],
+          "title": "PlaceInput",
+          "type": "object"
+        }
+      },
+      "properties": {
+        "request": {
+          "$ref": "#/$defs/PlaceInput"
+        }
+      },
+      "required": [
+        "request"
+      ],
+      "title": "resolve_birthplaceArguments",
+      "type": "object"
+    },
+    "outputSchema": {
+      "$defs": {
+        "Aspect": {
+          "additionalProperties": false,
+          "properties": {
+            "body1": {
+              "title": "Body1",
+              "type": "string"
+            },
+            "body2": {
+              "title": "Body2",
+              "type": "string"
+            },
+            "aspect": {
+              "enum": [
+                "conjunction",
+                "sextile",
+                "square",
+                "trine",
+                "opposition"
+              ],
+              "title": "Aspect",
+              "type": "string"
+            },
+            "exact_angle": {
+              "title": "Exact Angle",
+              "type": "number"
+            },
+            "separation": {
+              "title": "Separation",
+              "type": "number"
+            },
+            "orb": {
+              "title": "Orb",
+              "type": "number"
+            },
+            "allowed_orb": {
+              "title": "Allowed Orb",
+              "type": "number"
+            }
+          },
+          "required": [
+            "body1",
+            "body2",
+            "aspect",
+            "exact_angle",
+            "separation",
+            "orb",
+            "allowed_orb"
+          ],
+          "title": "Aspect",
+          "type": "object"
+        },
+        "House": {
+          "additionalProperties": false,
+          "properties": {
+            "number": {
+              "maximum": 12,
+              "minimum": 1,
+              "title": "Number",
+              "type": "integer"
+            },
+            "longitude": {
+              "exclusiveMaximum": 360,
+              "minimum": 0,
+              "title": "Longitude",
+              "type": "number"
+            },
+            "sign": {
+              "title": "Sign",
+              "type": "string"
+            },
+            "degree_in_sign": {
+              "exclusiveMaximum": 30,
+              "minimum": 0,
+              "title": "Degree In Sign",
+              "type": "number"
+            }
+          },
+          "required": [
+            "number",
+            "longitude",
+            "sign",
+            "degree_in_sign"
+          ],
+          "title": "House",
+          "type": "object"
+        },
+        "Issue": {
+          "additionalProperties": false,
+          "properties": {
+            "code": {
+              "title": "Code",
+              "type": "string"
+            },
+            "message": {
+              "title": "Message",
+              "type": "string"
+            }
+          },
+          "required": [
+            "code",
+            "message"
+          ],
+          "title": "Issue",
+          "type": "object"
+        },
+        "Location": {
+          "additionalProperties": false,
+          "properties": {
+            "city": {
+              "title": "City",
+              "type": "string"
+            },
+            "country": {
+              "title": "Country",
+              "type": "string"
+            },
+            "region": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Region"
+            },
+            "latitude": {
+              "maximum": 90,
+              "minimum": -90,
+              "title": "Latitude",
+              "type": "number"
+            },
+            "longitude": {
+              "maximum": 180,
+              "minimum": -180,
+              "title": "Longitude",
+              "type": "number"
+            },
+            "source": {
+              "title": "Source",
+              "type": "string"
+            },
+            "confidence": {
+              "enum": [
+                "provider_unscored",
+                "user_supplied",
+                "curated"
+              ],
+              "title": "Confidence",
+              "type": "string"
+            },
+            "ambiguous": {
+              "default": false,
+              "title": "Ambiguous",
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "city",
+            "country",
+            "latitude",
+            "longitude",
+            "source",
+            "confidence"
+          ],
+          "title": "Location",
+          "type": "object"
+        },
+        "Position": {
+          "additionalProperties": false,
+          "properties": {
+            "body": {
+              "title": "Body",
+              "type": "string"
+            },
+            "longitude": {
+              "exclusiveMaximum": 360,
+              "minimum": 0,
+              "title": "Longitude",
+              "type": "number"
+            },
+            "latitude": {
+              "default": 0.0,
+              "title": "Latitude",
+              "type": "number"
+            },
+            "sign": {
+              "title": "Sign",
+              "type": "string"
+            },
+            "degree_in_sign": {
+              "exclusiveMaximum": 30,
+              "minimum": 0,
+              "title": "Degree In Sign",
+              "type": "number"
+            },
+            "speed_longitude": {
+              "anyOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Speed Longitude"
+            },
+            "retrograde": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Retrograde"
+            },
+            "house": {
+              "anyOf": [
+                {
+                  "maximum": 12,
+                  "minimum": 1,
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "House"
+            },
+            "uncertainty": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Uncertainty"
+            },
+            "sampled_longitudes": {
+              "items": {
+                "type": "number"
+              },
+              "title": "Sampled Longitudes",
+              "type": "array"
+            },
+            "possible_signs": {
+              "items": {
+                "type": "string"
+              },
+              "title": "Possible Signs",
+              "type": "array"
+            }
+          },
+          "required": [
+            "body",
+            "longitude",
+            "sign",
+            "degree_in_sign"
+          ],
+          "title": "Position",
+          "type": "object"
+        }
+      },
+      "additionalProperties": false,
+      "properties": {
+        "success": {
+          "default": true,
+          "title": "Success",
+          "type": "boolean"
+        },
+        "calculation_mode": {
+          "const": "literal_no_timezone",
+          "default": "literal_no_timezone",
+          "title": "Calculation Mode",
+          "type": "string"
+        },
+        "input": {
+          "additionalProperties": true,
+          "title": "Input",
+          "type": "object"
+        },
+        "resolved_location": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Location"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "time_reference": {
+          "default": "supplied_clock_used_as_ut",
+          "title": "Time Reference",
+          "type": "string"
+        },
+        "precision_status": {
+          "default": "civil_time_not_utc_verified",
+          "title": "Precision Status",
+          "type": "string"
+        },
+        "engine": {
+          "default": "Swiss Ephemeris",
+          "title": "Engine",
+          "type": "string"
+        },
+        "engine_version": {
+          "title": "Engine Version",
+          "type": "string"
+        },
+        "ephemeris_source": {
+          "default": "not_used",
+          "title": "Ephemeris Source",
+          "type": "string"
+        },
+        "zodiac": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Zodiac"
+        },
+        "house_system": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "House System"
+        },
+        "positions": {
+          "items": {
+            "$ref": "#/$defs/Position"
+          },
+          "title": "Positions",
+          "type": "array"
+        },
+        "houses": {
+          "items": {
+            "$ref": "#/$defs/House"
+          },
+          "title": "Houses",
+          "type": "array"
+        },
+        "angles": {
+          "additionalProperties": {
+            "$ref": "#/$defs/Position"
+          },
+          "title": "Angles",
+          "type": "object"
+        },
+        "aspects": {
+          "items": {
+            "$ref": "#/$defs/Aspect"
+          },
+          "title": "Aspects",
+          "type": "array"
+        },
+        "warnings": {
+          "items": {
+            "$ref": "#/$defs/Issue"
+          },
+          "title": "Warnings",
+          "type": "array"
+        },
+        "errors": {
+          "items": {
+            "$ref": "#/$defs/Issue"
+          },
+          "title": "Errors",
+          "type": "array"
+        },
+        "candidates": {
+          "items": {
+            "$ref": "#/$defs/Location"
+          },
+          "title": "Candidates",
+          "type": "array"
+        },
+        "ambiguous": {
+          "default": false,
+          "title": "Ambiguous",
+          "type": "boolean"
+        },
+        "julian_day": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Julian Day"
+        },
+        "effective_clock": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Effective Clock"
+        },
+        "source_url": {
+          "default": "/source",
+          "title": "Source Url",
+          "type": "string"
+        }
+      },
+      "required": [
+        "input",
+        "engine_version"
+      ],
+      "title": "Result",
+      "type": "object"
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    }
+  },
+  {
+    "name": "calculate_natal_chart",
+    "description": "Calculate literal-time tropical chart. Supply confirmed coordinates to avoid external geocoding. No UTC/DST conversion; exact clock does not mean verified instant.",
+    "inputSchema": {
+      "$defs": {
+        "NatalInput": {
+          "additionalProperties": false,
+          "properties": {
+            "city": {
+              "maxLength": 120,
+              "minLength": 1,
+              "pattern": "^[^\\x00-\\x1f\\x7f]+$",
+              "title": "City",
+              "type": "string"
+            },
+            "country": {
+              "maxLength": 120,
+              "minLength": 1,
+              "pattern": "^[^\\x00-\\x1f\\x7f]+$",
+              "title": "Country",
+              "type": "string"
+            },
+            "region": {
+              "anyOf": [
+                {
+                  "maxLength": 120,
+                  "minLength": 1,
+                  "pattern": "^[^\\x00-\\x1f\\x7f]+$",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Region"
+            },
+            "birth_date": {
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+              "title": "Birth Date",
+              "type": "string"
+            },
+            "birth_time": {
+              "anyOf": [
+                {
+                  "pattern": "^([01][0-9]|2[0-3]):[0-5][0-9]$",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Birth Time"
+            },
+            "latitude": {
+              "anyOf": [
+                {
+                  "maximum": 90,
+                  "minimum": -90,
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Latitude"
+            },
+            "longitude": {
+              "anyOf": [
+                {
+                  "maximum": 180,
+                  "minimum": -180,
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Longitude"
+            },
+            "zodiac": {
+              "const": "tropical",
+              "default": "tropical",
+              "title": "Zodiac",
+              "type": "string"
+            },
+            "house_system": {
+              "default": "Placidus",
+              "enum": [
+                "Placidus",
+                "WholeSign",
+                "Equal"
+              ],
+              "title": "House System",
+              "type": "string"
+            },
+            "node_type": {
+              "default": "mean",
+              "enum": [
+                "mean",
+                "true"
+              ],
+              "title": "Node Type",
+              "type": "string"
+            },
+            "time_precision": {
+              "default": "unknown",
+              "enum": [
+                "exact",
+                "approximate",
+                "unknown"
+              ],
+              "title": "Time Precision",
+              "type": "string"
+            },
+            "calculation_mode": {
+              "const": "literal_no_timezone",
+              "default": "literal_no_timezone",
+              "title": "Calculation Mode",
+              "type": "string"
+            },
+            "require_verified_instant": {
+              "default": false,
+              "title": "Require Verified Instant",
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "city",
+            "country",
+            "birth_date"
+          ],
+          "title": "NatalInput",
+          "type": "object"
+        }
+      },
+      "properties": {
+        "request": {
+          "$ref": "#/$defs/NatalInput"
+        }
+      },
+      "required": [
+        "request"
+      ],
+      "title": "calculate_natal_chartArguments",
+      "type": "object"
+    },
+    "outputSchema": {
+      "$defs": {
+        "Aspect": {
+          "additionalProperties": false,
+          "properties": {
+            "body1": {
+              "title": "Body1",
+              "type": "string"
+            },
+            "body2": {
+              "title": "Body2",
+              "type": "string"
+            },
+            "aspect": {
+              "enum": [
+                "conjunction",
+                "sextile",
+                "square",
+                "trine",
+                "opposition"
+              ],
+              "title": "Aspect",
+              "type": "string"
+            },
+            "exact_angle": {
+              "title": "Exact Angle",
+              "type": "number"
+            },
+            "separation": {
+              "title": "Separation",
+              "type": "number"
+            },
+            "orb": {
+              "title": "Orb",
+              "type": "number"
+            },
+            "allowed_orb": {
+              "title": "Allowed Orb",
+              "type": "number"
+            }
+          },
+          "required": [
+            "body1",
+            "body2",
+            "aspect",
+            "exact_angle",
+            "separation",
+            "orb",
+            "allowed_orb"
+          ],
+          "title": "Aspect",
+          "type": "object"
+        },
+        "House": {
+          "additionalProperties": false,
+          "properties": {
+            "number": {
+              "maximum": 12,
+              "minimum": 1,
+              "title": "Number",
+              "type": "integer"
+            },
+            "longitude": {
+              "exclusiveMaximum": 360,
+              "minimum": 0,
+              "title": "Longitude",
+              "type": "number"
+            },
+            "sign": {
+              "title": "Sign",
+              "type": "string"
+            },
+            "degree_in_sign": {
+              "exclusiveMaximum": 30,
+              "minimum": 0,
+              "title": "Degree In Sign",
+              "type": "number"
+            }
+          },
+          "required": [
+            "number",
+            "longitude",
+            "sign",
+            "degree_in_sign"
+          ],
+          "title": "House",
+          "type": "object"
+        },
+        "Issue": {
+          "additionalProperties": false,
+          "properties": {
+            "code": {
+              "title": "Code",
+              "type": "string"
+            },
+            "message": {
+              "title": "Message",
+              "type": "string"
+            }
+          },
+          "required": [
+            "code",
+            "message"
+          ],
+          "title": "Issue",
+          "type": "object"
+        },
+        "Location": {
+          "additionalProperties": false,
+          "properties": {
+            "city": {
+              "title": "City",
+              "type": "string"
+            },
+            "country": {
+              "title": "Country",
+              "type": "string"
+            },
+            "region": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Region"
+            },
+            "latitude": {
+              "maximum": 90,
+              "minimum": -90,
+              "title": "Latitude",
+              "type": "number"
+            },
+            "longitude": {
+              "maximum": 180,
+              "minimum": -180,
+              "title": "Longitude",
+              "type": "number"
+            },
+            "source": {
+              "title": "Source",
+              "type": "string"
+            },
+            "confidence": {
+              "enum": [
+                "provider_unscored",
+                "user_supplied",
+                "curated"
+              ],
+              "title": "Confidence",
+              "type": "string"
+            },
+            "ambiguous": {
+              "default": false,
+              "title": "Ambiguous",
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "city",
+            "country",
+            "latitude",
+            "longitude",
+            "source",
+            "confidence"
+          ],
+          "title": "Location",
+          "type": "object"
+        },
+        "Position": {
+          "additionalProperties": false,
+          "properties": {
+            "body": {
+              "title": "Body",
+              "type": "string"
+            },
+            "longitude": {
+              "exclusiveMaximum": 360,
+              "minimum": 0,
+              "title": "Longitude",
+              "type": "number"
+            },
+            "latitude": {
+              "default": 0.0,
+              "title": "Latitude",
+              "type": "number"
+            },
+            "sign": {
+              "title": "Sign",
+              "type": "string"
+            },
+            "degree_in_sign": {
+              "exclusiveMaximum": 30,
+              "minimum": 0,
+              "title": "Degree In Sign",
+              "type": "number"
+            },
+            "speed_longitude": {
+              "anyOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Speed Longitude"
+            },
+            "retrograde": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Retrograde"
+            },
+            "house": {
+              "anyOf": [
+                {
+                  "maximum": 12,
+                  "minimum": 1,
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "House"
+            },
+            "uncertainty": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Uncertainty"
+            },
+            "sampled_longitudes": {
+              "items": {
+                "type": "number"
+              },
+              "title": "Sampled Longitudes",
+              "type": "array"
+            },
+            "possible_signs": {
+              "items": {
+                "type": "string"
+              },
+              "title": "Possible Signs",
+              "type": "array"
+            }
+          },
+          "required": [
+            "body",
+            "longitude",
+            "sign",
+            "degree_in_sign"
+          ],
+          "title": "Position",
+          "type": "object"
+        }
+      },
+      "additionalProperties": false,
+      "properties": {
+        "success": {
+          "default": true,
+          "title": "Success",
+          "type": "boolean"
+        },
+        "calculation_mode": {
+          "const": "literal_no_timezone",
+          "default": "literal_no_timezone",
+          "title": "Calculation Mode",
+          "type": "string"
+        },
+        "input": {
+          "additionalProperties": true,
+          "title": "Input",
+          "type": "object"
+        },
+        "resolved_location": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Location"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "time_reference": {
+          "default": "supplied_clock_used_as_ut",
+          "title": "Time Reference",
+          "type": "string"
+        },
+        "precision_status": {
+          "default": "civil_time_not_utc_verified",
+          "title": "Precision Status",
+          "type": "string"
+        },
+        "engine": {
+          "default": "Swiss Ephemeris",
+          "title": "Engine",
+          "type": "string"
+        },
+        "engine_version": {
+          "title": "Engine Version",
+          "type": "string"
+        },
+        "ephemeris_source": {
+          "default": "not_used",
+          "title": "Ephemeris Source",
+          "type": "string"
+        },
+        "zodiac": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Zodiac"
+        },
+        "house_system": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "House System"
+        },
+        "positions": {
+          "items": {
+            "$ref": "#/$defs/Position"
+          },
+          "title": "Positions",
+          "type": "array"
+        },
+        "houses": {
+          "items": {
+            "$ref": "#/$defs/House"
+          },
+          "title": "Houses",
+          "type": "array"
+        },
+        "angles": {
+          "additionalProperties": {
+            "$ref": "#/$defs/Position"
+          },
+          "title": "Angles",
+          "type": "object"
+        },
+        "aspects": {
+          "items": {
+            "$ref": "#/$defs/Aspect"
+          },
+          "title": "Aspects",
+          "type": "array"
+        },
+        "warnings": {
+          "items": {
+            "$ref": "#/$defs/Issue"
+          },
+          "title": "Warnings",
+          "type": "array"
+        },
+        "errors": {
+          "items": {
+            "$ref": "#/$defs/Issue"
+          },
+          "title": "Errors",
+          "type": "array"
+        },
+        "candidates": {
+          "items": {
+            "$ref": "#/$defs/Location"
+          },
+          "title": "Candidates",
+          "type": "array"
+        },
+        "ambiguous": {
+          "default": false,
+          "title": "Ambiguous",
+          "type": "boolean"
+        },
+        "julian_day": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Julian Day"
+        },
+        "effective_clock": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Effective Clock"
+        },
+        "source_url": {
+          "default": "/source",
+          "title": "Source Url",
+          "type": "string"
+        }
+      },
+      "required": [
+        "input",
+        "engine_version"
+      ],
+      "title": "Result",
+      "type": "object"
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": true
+    }
+  },
+  {
+    "name": "calculate_transits",
+    "description": "Planet positions and mutual aspects at a literal conventional UT reference, not natal-to-transit synastry.",
+    "inputSchema": {
+      "$defs": {
+        "ReferenceInput": {
+          "additionalProperties": false,
+          "properties": {
+            "reference_date": {
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+              "title": "Reference Date",
+              "type": "string"
+            },
+            "reference_time": {
+              "pattern": "^([01][0-9]|2[0-3]):[0-5][0-9]$",
+              "title": "Reference Time",
+              "type": "string"
+            },
+            "calculation_mode": {
+              "const": "literal_no_timezone",
+              "default": "literal_no_timezone",
+              "title": "Calculation Mode",
+              "type": "string"
+            },
+            "zodiac": {
+              "const": "tropical",
+              "default": "tropical",
+              "title": "Zodiac",
+              "type": "string"
+            },
+            "node_type": {
+              "default": "mean",
+              "enum": [
+                "mean",
+                "true"
+              ],
+              "title": "Node Type",
+              "type": "string"
+            }
+          },
+          "required": [
+            "reference_date",
+            "reference_time"
+          ],
+          "title": "ReferenceInput",
+          "type": "object"
+        }
+      },
+      "properties": {
+        "request": {
+          "$ref": "#/$defs/ReferenceInput"
+        }
+      },
+      "required": [
+        "request"
+      ],
+      "title": "calculate_transitsArguments",
+      "type": "object"
+    },
+    "outputSchema": {
+      "$defs": {
+        "Aspect": {
+          "additionalProperties": false,
+          "properties": {
+            "body1": {
+              "title": "Body1",
+              "type": "string"
+            },
+            "body2": {
+              "title": "Body2",
+              "type": "string"
+            },
+            "aspect": {
+              "enum": [
+                "conjunction",
+                "sextile",
+                "square",
+                "trine",
+                "opposition"
+              ],
+              "title": "Aspect",
+              "type": "string"
+            },
+            "exact_angle": {
+              "title": "Exact Angle",
+              "type": "number"
+            },
+            "separation": {
+              "title": "Separation",
+              "type": "number"
+            },
+            "orb": {
+              "title": "Orb",
+              "type": "number"
+            },
+            "allowed_orb": {
+              "title": "Allowed Orb",
+              "type": "number"
+            }
+          },
+          "required": [
+            "body1",
+            "body2",
+            "aspect",
+            "exact_angle",
+            "separation",
+            "orb",
+            "allowed_orb"
+          ],
+          "title": "Aspect",
+          "type": "object"
+        },
+        "House": {
+          "additionalProperties": false,
+          "properties": {
+            "number": {
+              "maximum": 12,
+              "minimum": 1,
+              "title": "Number",
+              "type": "integer"
+            },
+            "longitude": {
+              "exclusiveMaximum": 360,
+              "minimum": 0,
+              "title": "Longitude",
+              "type": "number"
+            },
+            "sign": {
+              "title": "Sign",
+              "type": "string"
+            },
+            "degree_in_sign": {
+              "exclusiveMaximum": 30,
+              "minimum": 0,
+              "title": "Degree In Sign",
+              "type": "number"
+            }
+          },
+          "required": [
+            "number",
+            "longitude",
+            "sign",
+            "degree_in_sign"
+          ],
+          "title": "House",
+          "type": "object"
+        },
+        "Issue": {
+          "additionalProperties": false,
+          "properties": {
+            "code": {
+              "title": "Code",
+              "type": "string"
+            },
+            "message": {
+              "title": "Message",
+              "type": "string"
+            }
+          },
+          "required": [
+            "code",
+            "message"
+          ],
+          "title": "Issue",
+          "type": "object"
+        },
+        "Location": {
+          "additionalProperties": false,
+          "properties": {
+            "city": {
+              "title": "City",
+              "type": "string"
+            },
+            "country": {
+              "title": "Country",
+              "type": "string"
+            },
+            "region": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Region"
+            },
+            "latitude": {
+              "maximum": 90,
+              "minimum": -90,
+              "title": "Latitude",
+              "type": "number"
+            },
+            "longitude": {
+              "maximum": 180,
+              "minimum": -180,
+              "title": "Longitude",
+              "type": "number"
+            },
+            "source": {
+              "title": "Source",
+              "type": "string"
+            },
+            "confidence": {
+              "enum": [
+                "provider_unscored",
+                "user_supplied",
+                "curated"
+              ],
+              "title": "Confidence",
+              "type": "string"
+            },
+            "ambiguous": {
+              "default": false,
+              "title": "Ambiguous",
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "city",
+            "country",
+            "latitude",
+            "longitude",
+            "source",
+            "confidence"
+          ],
+          "title": "Location",
+          "type": "object"
+        },
+        "Position": {
+          "additionalProperties": false,
+          "properties": {
+            "body": {
+              "title": "Body",
+              "type": "string"
+            },
+            "longitude": {
+              "exclusiveMaximum": 360,
+              "minimum": 0,
+              "title": "Longitude",
+              "type": "number"
+            },
+            "latitude": {
+              "default": 0.0,
+              "title": "Latitude",
+              "type": "number"
+            },
+            "sign": {
+              "title": "Sign",
+              "type": "string"
+            },
+            "degree_in_sign": {
+              "exclusiveMaximum": 30,
+              "minimum": 0,
+              "title": "Degree In Sign",
+              "type": "number"
+            },
+            "speed_longitude": {
+              "anyOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Speed Longitude"
+            },
+            "retrograde": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Retrograde"
+            },
+            "house": {
+              "anyOf": [
+                {
+                  "maximum": 12,
+                  "minimum": 1,
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "House"
+            },
+            "uncertainty": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Uncertainty"
+            },
+            "sampled_longitudes": {
+              "items": {
+                "type": "number"
+              },
+              "title": "Sampled Longitudes",
+              "type": "array"
+            },
+            "possible_signs": {
+              "items": {
+                "type": "string"
+              },
+              "title": "Possible Signs",
+              "type": "array"
+            }
+          },
+          "required": [
+            "body",
+            "longitude",
+            "sign",
+            "degree_in_sign"
+          ],
+          "title": "Position",
+          "type": "object"
+        }
+      },
+      "additionalProperties": false,
+      "properties": {
+        "success": {
+          "default": true,
+          "title": "Success",
+          "type": "boolean"
+        },
+        "calculation_mode": {
+          "const": "literal_no_timezone",
+          "default": "literal_no_timezone",
+          "title": "Calculation Mode",
+          "type": "string"
+        },
+        "input": {
+          "additionalProperties": true,
+          "title": "Input",
+          "type": "object"
+        },
+        "resolved_location": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Location"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "time_reference": {
+          "default": "supplied_clock_used_as_ut",
+          "title": "Time Reference",
+          "type": "string"
+        },
+        "precision_status": {
+          "default": "civil_time_not_utc_verified",
+          "title": "Precision Status",
+          "type": "string"
+        },
+        "engine": {
+          "default": "Swiss Ephemeris",
+          "title": "Engine",
+          "type": "string"
+        },
+        "engine_version": {
+          "title": "Engine Version",
+          "type": "string"
+        },
+        "ephemeris_source": {
+          "default": "not_used",
+          "title": "Ephemeris Source",
+          "type": "string"
+        },
+        "zodiac": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Zodiac"
+        },
+        "house_system": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "House System"
+        },
+        "positions": {
+          "items": {
+            "$ref": "#/$defs/Position"
+          },
+          "title": "Positions",
+          "type": "array"
+        },
+        "houses": {
+          "items": {
+            "$ref": "#/$defs/House"
+          },
+          "title": "Houses",
+          "type": "array"
+        },
+        "angles": {
+          "additionalProperties": {
+            "$ref": "#/$defs/Position"
+          },
+          "title": "Angles",
+          "type": "object"
+        },
+        "aspects": {
+          "items": {
+            "$ref": "#/$defs/Aspect"
+          },
+          "title": "Aspects",
+          "type": "array"
+        },
+        "warnings": {
+          "items": {
+            "$ref": "#/$defs/Issue"
+          },
+          "title": "Warnings",
+          "type": "array"
+        },
+        "errors": {
+          "items": {
+            "$ref": "#/$defs/Issue"
+          },
+          "title": "Errors",
+          "type": "array"
+        },
+        "candidates": {
+          "items": {
+            "$ref": "#/$defs/Location"
+          },
+          "title": "Candidates",
+          "type": "array"
+        },
+        "ambiguous": {
+          "default": false,
+          "title": "Ambiguous",
+          "type": "boolean"
+        },
+        "julian_day": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Julian Day"
+        },
+        "effective_clock": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Effective Clock"
+        },
+        "source_url": {
+          "default": "/source",
+          "title": "Source Url",
+          "type": "string"
+        }
+      },
+      "required": [
+        "input",
+        "engine_version"
+      ],
+      "title": "Result",
+      "type": "object"
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
+    }
+  },
+  {
+    "name": "calculate_aspects",
+    "description": "Deterministic major aspects from supplied 0 <= longitudes < 360. Default orbs 8/4/6/6/8 degrees.",
+    "inputSchema": {
+      "$defs": {
+        "AspectInput": {
+          "additionalProperties": false,
+          "properties": {
+            "longitudes": {
+              "maxProperties": 32,
+              "minProperties": 2,
+              "patternProperties": {
+                "^[^\\x00-\\x1f\\x7f]+$": {
+                  "exclusiveMaximum": 360,
+                  "minimum": 0,
+                  "type": "number"
+                }
+              },
+              "propertyNames": {
+                "maxLength": 120,
+                "minLength": 1
+              },
+              "title": "Longitudes",
+              "type": "object"
+            },
+            "orbs": {
+              "$ref": "#/$defs/OrbConfig"
+            }
+          },
+          "required": [
+            "longitudes"
+          ],
+          "title": "AspectInput",
+          "type": "object"
+        },
+        "OrbConfig": {
+          "additionalProperties": false,
+          "properties": {
+            "conjunction": {
+              "default": 8.0,
+              "maximum": 15,
+              "minimum": 0,
+              "title": "Conjunction",
+              "type": "number"
+            },
+            "sextile": {
+              "default": 4.0,
+              "maximum": 15,
+              "minimum": 0,
+              "title": "Sextile",
+              "type": "number"
+            },
+            "square": {
+              "default": 6.0,
+              "maximum": 15,
+              "minimum": 0,
+              "title": "Square",
+              "type": "number"
+            },
+            "trine": {
+              "default": 6.0,
+              "maximum": 15,
+              "minimum": 0,
+              "title": "Trine",
+              "type": "number"
+            },
+            "opposition": {
+              "default": 8.0,
+              "maximum": 15,
+              "minimum": 0,
+              "title": "Opposition",
+              "type": "number"
+            }
+          },
+          "title": "OrbConfig",
+          "type": "object"
+        }
+      },
+      "properties": {
+        "request": {
+          "$ref": "#/$defs/AspectInput"
+        }
+      },
+      "required": [
+        "request"
+      ],
+      "title": "calculate_aspectsArguments",
+      "type": "object"
+    },
+    "outputSchema": {
+      "$defs": {
+        "Aspect": {
+          "additionalProperties": false,
+          "properties": {
+            "body1": {
+              "title": "Body1",
+              "type": "string"
+            },
+            "body2": {
+              "title": "Body2",
+              "type": "string"
+            },
+            "aspect": {
+              "enum": [
+                "conjunction",
+                "sextile",
+                "square",
+                "trine",
+                "opposition"
+              ],
+              "title": "Aspect",
+              "type": "string"
+            },
+            "exact_angle": {
+              "title": "Exact Angle",
+              "type": "number"
+            },
+            "separation": {
+              "title": "Separation",
+              "type": "number"
+            },
+            "orb": {
+              "title": "Orb",
+              "type": "number"
+            },
+            "allowed_orb": {
+              "title": "Allowed Orb",
+              "type": "number"
+            }
+          },
+          "required": [
+            "body1",
+            "body2",
+            "aspect",
+            "exact_angle",
+            "separation",
+            "orb",
+            "allowed_orb"
+          ],
+          "title": "Aspect",
+          "type": "object"
+        },
+        "House": {
+          "additionalProperties": false,
+          "properties": {
+            "number": {
+              "maximum": 12,
+              "minimum": 1,
+              "title": "Number",
+              "type": "integer"
+            },
+            "longitude": {
+              "exclusiveMaximum": 360,
+              "minimum": 0,
+              "title": "Longitude",
+              "type": "number"
+            },
+            "sign": {
+              "title": "Sign",
+              "type": "string"
+            },
+            "degree_in_sign": {
+              "exclusiveMaximum": 30,
+              "minimum": 0,
+              "title": "Degree In Sign",
+              "type": "number"
+            }
+          },
+          "required": [
+            "number",
+            "longitude",
+            "sign",
+            "degree_in_sign"
+          ],
+          "title": "House",
+          "type": "object"
+        },
+        "Issue": {
+          "additionalProperties": false,
+          "properties": {
+            "code": {
+              "title": "Code",
+              "type": "string"
+            },
+            "message": {
+              "title": "Message",
+              "type": "string"
+            }
+          },
+          "required": [
+            "code",
+            "message"
+          ],
+          "title": "Issue",
+          "type": "object"
+        },
+        "Location": {
+          "additionalProperties": false,
+          "properties": {
+            "city": {
+              "title": "City",
+              "type": "string"
+            },
+            "country": {
+              "title": "Country",
+              "type": "string"
+            },
+            "region": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Region"
+            },
+            "latitude": {
+              "maximum": 90,
+              "minimum": -90,
+              "title": "Latitude",
+              "type": "number"
+            },
+            "longitude": {
+              "maximum": 180,
+              "minimum": -180,
+              "title": "Longitude",
+              "type": "number"
+            },
+            "source": {
+              "title": "Source",
+              "type": "string"
+            },
+            "confidence": {
+              "enum": [
+                "provider_unscored",
+                "user_supplied",
+                "curated"
+              ],
+              "title": "Confidence",
+              "type": "string"
+            },
+            "ambiguous": {
+              "default": false,
+              "title": "Ambiguous",
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "city",
+            "country",
+            "latitude",
+            "longitude",
+            "source",
+            "confidence"
+          ],
+          "title": "Location",
+          "type": "object"
+        },
+        "Position": {
+          "additionalProperties": false,
+          "properties": {
+            "body": {
+              "title": "Body",
+              "type": "string"
+            },
+            "longitude": {
+              "exclusiveMaximum": 360,
+              "minimum": 0,
+              "title": "Longitude",
+              "type": "number"
+            },
+            "latitude": {
+              "default": 0.0,
+              "title": "Latitude",
+              "type": "number"
+            },
+            "sign": {
+              "title": "Sign",
+              "type": "string"
+            },
+            "degree_in_sign": {
+              "exclusiveMaximum": 30,
+              "minimum": 0,
+              "title": "Degree In Sign",
+              "type": "number"
+            },
+            "speed_longitude": {
+              "anyOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Speed Longitude"
+            },
+            "retrograde": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Retrograde"
+            },
+            "house": {
+              "anyOf": [
+                {
+                  "maximum": 12,
+                  "minimum": 1,
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "House"
+            },
+            "uncertainty": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Uncertainty"
+            },
+            "sampled_longitudes": {
+              "items": {
+                "type": "number"
+              },
+              "title": "Sampled Longitudes",
+              "type": "array"
+            },
+            "possible_signs": {
+              "items": {
+                "type": "string"
+              },
+              "title": "Possible Signs",
+              "type": "array"
+            }
+          },
+          "required": [
+            "body",
+            "longitude",
+            "sign",
+            "degree_in_sign"
+          ],
+          "title": "Position",
+          "type": "object"
+        }
+      },
+      "additionalProperties": false,
+      "properties": {
+        "success": {
+          "default": true,
+          "title": "Success",
+          "type": "boolean"
+        },
+        "calculation_mode": {
+          "const": "literal_no_timezone",
+          "default": "literal_no_timezone",
+          "title": "Calculation Mode",
+          "type": "string"
+        },
+        "input": {
+          "additionalProperties": true,
+          "title": "Input",
+          "type": "object"
+        },
+        "resolved_location": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Location"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "time_reference": {
+          "default": "supplied_clock_used_as_ut",
+          "title": "Time Reference",
+          "type": "string"
+        },
+        "precision_status": {
+          "default": "civil_time_not_utc_verified",
+          "title": "Precision Status",
+          "type": "string"
+        },
+        "engine": {
+          "default": "Swiss Ephemeris",
+          "title": "Engine",
+          "type": "string"
+        },
+        "engine_version": {
+          "title": "Engine Version",
+          "type": "string"
+        },
+        "ephemeris_source": {
+          "default": "not_used",
+          "title": "Ephemeris Source",
+          "type": "string"
+        },
+        "zodiac": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Zodiac"
+        },
+        "house_system": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "House System"
+        },
+        "positions": {
+          "items": {
+            "$ref": "#/$defs/Position"
+          },
+          "title": "Positions",
+          "type": "array"
+        },
+        "houses": {
+          "items": {
+            "$ref": "#/$defs/House"
+          },
+          "title": "Houses",
+          "type": "array"
+        },
+        "angles": {
+          "additionalProperties": {
+            "$ref": "#/$defs/Position"
+          },
+          "title": "Angles",
+          "type": "object"
+        },
+        "aspects": {
+          "items": {
+            "$ref": "#/$defs/Aspect"
+          },
+          "title": "Aspects",
+          "type": "array"
+        },
+        "warnings": {
+          "items": {
+            "$ref": "#/$defs/Issue"
+          },
+          "title": "Warnings",
+          "type": "array"
+        },
+        "errors": {
+          "items": {
+            "$ref": "#/$defs/Issue"
+          },
+          "title": "Errors",
+          "type": "array"
+        },
+        "candidates": {
+          "items": {
+            "$ref": "#/$defs/Location"
+          },
+          "title": "Candidates",
+          "type": "array"
+        },
+        "ambiguous": {
+          "default": false,
+          "title": "Ambiguous",
+          "type": "boolean"
+        },
+        "julian_day": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Julian Day"
+        },
+        "effective_clock": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Effective Clock"
+        },
+        "source_url": {
+          "default": "/source",
+          "title": "Source Url",
+          "type": "string"
+        }
+      },
+      "required": [
+        "input",
+        "engine_version"
+      ],
+      "title": "Result",
+      "type": "object"
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
+    }
+  },
+  {
+    "name": "get_ephemeris",
+    "description": "Swiss planetary positions with pinned data provenance; literal conventional UT, not verified UTC.",
+    "inputSchema": {
+      "$defs": {
+        "ReferenceInput": {
+          "additionalProperties": false,
+          "properties": {
+            "reference_date": {
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+              "title": "Reference Date",
+              "type": "string"
+            },
+            "reference_time": {
+              "pattern": "^([01][0-9]|2[0-3]):[0-5][0-9]$",
+              "title": "Reference Time",
+              "type": "string"
+            },
+            "calculation_mode": {
+              "const": "literal_no_timezone",
+              "default": "literal_no_timezone",
+              "title": "Calculation Mode",
+              "type": "string"
+            },
+            "zodiac": {
+              "const": "tropical",
+              "default": "tropical",
+              "title": "Zodiac",
+              "type": "string"
+            },
+            "node_type": {
+              "default": "mean",
+              "enum": [
+                "mean",
+                "true"
+              ],
+              "title": "Node Type",
+              "type": "string"
+            }
+          },
+          "required": [
+            "reference_date",
+            "reference_time"
+          ],
+          "title": "ReferenceInput",
+          "type": "object"
+        }
+      },
+      "properties": {
+        "request": {
+          "$ref": "#/$defs/ReferenceInput"
+        }
+      },
+      "required": [
+        "request"
+      ],
+      "title": "get_ephemerisArguments",
+      "type": "object"
+    },
+    "outputSchema": {
+      "$defs": {
+        "Aspect": {
+          "additionalProperties": false,
+          "properties": {
+            "body1": {
+              "title": "Body1",
+              "type": "string"
+            },
+            "body2": {
+              "title": "Body2",
+              "type": "string"
+            },
+            "aspect": {
+              "enum": [
+                "conjunction",
+                "sextile",
+                "square",
+                "trine",
+                "opposition"
+              ],
+              "title": "Aspect",
+              "type": "string"
+            },
+            "exact_angle": {
+              "title": "Exact Angle",
+              "type": "number"
+            },
+            "separation": {
+              "title": "Separation",
+              "type": "number"
+            },
+            "orb": {
+              "title": "Orb",
+              "type": "number"
+            },
+            "allowed_orb": {
+              "title": "Allowed Orb",
+              "type": "number"
+            }
+          },
+          "required": [
+            "body1",
+            "body2",
+            "aspect",
+            "exact_angle",
+            "separation",
+            "orb",
+            "allowed_orb"
+          ],
+          "title": "Aspect",
+          "type": "object"
+        },
+        "House": {
+          "additionalProperties": false,
+          "properties": {
+            "number": {
+              "maximum": 12,
+              "minimum": 1,
+              "title": "Number",
+              "type": "integer"
+            },
+            "longitude": {
+              "exclusiveMaximum": 360,
+              "minimum": 0,
+              "title": "Longitude",
+              "type": "number"
+            },
+            "sign": {
+              "title": "Sign",
+              "type": "string"
+            },
+            "degree_in_sign": {
+              "exclusiveMaximum": 30,
+              "minimum": 0,
+              "title": "Degree In Sign",
+              "type": "number"
+            }
+          },
+          "required": [
+            "number",
+            "longitude",
+            "sign",
+            "degree_in_sign"
+          ],
+          "title": "House",
+          "type": "object"
+        },
+        "Issue": {
+          "additionalProperties": false,
+          "properties": {
+            "code": {
+              "title": "Code",
+              "type": "string"
+            },
+            "message": {
+              "title": "Message",
+              "type": "string"
+            }
+          },
+          "required": [
+            "code",
+            "message"
+          ],
+          "title": "Issue",
+          "type": "object"
+        },
+        "Location": {
+          "additionalProperties": false,
+          "properties": {
+            "city": {
+              "title": "City",
+              "type": "string"
+            },
+            "country": {
+              "title": "Country",
+              "type": "string"
+            },
+            "region": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Region"
+            },
+            "latitude": {
+              "maximum": 90,
+              "minimum": -90,
+              "title": "Latitude",
+              "type": "number"
+            },
+            "longitude": {
+              "maximum": 180,
+              "minimum": -180,
+              "title": "Longitude",
+              "type": "number"
+            },
+            "source": {
+              "title": "Source",
+              "type": "string"
+            },
+            "confidence": {
+              "enum": [
+                "provider_unscored",
+                "user_supplied",
+                "curated"
+              ],
+              "title": "Confidence",
+              "type": "string"
+            },
+            "ambiguous": {
+              "default": false,
+              "title": "Ambiguous",
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "city",
+            "country",
+            "latitude",
+            "longitude",
+            "source",
+            "confidence"
+          ],
+          "title": "Location",
+          "type": "object"
+        },
+        "Position": {
+          "additionalProperties": false,
+          "properties": {
+            "body": {
+              "title": "Body",
+              "type": "string"
+            },
+            "longitude": {
+              "exclusiveMaximum": 360,
+              "minimum": 0,
+              "title": "Longitude",
+              "type": "number"
+            },
+            "latitude": {
+              "default": 0.0,
+              "title": "Latitude",
+              "type": "number"
+            },
+            "sign": {
+              "title": "Sign",
+              "type": "string"
+            },
+            "degree_in_sign": {
+              "exclusiveMaximum": 30,
+              "minimum": 0,
+              "title": "Degree In Sign",
+              "type": "number"
+            },
+            "speed_longitude": {
+              "anyOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Speed Longitude"
+            },
+            "retrograde": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Retrograde"
+            },
+            "house": {
+              "anyOf": [
+                {
+                  "maximum": 12,
+                  "minimum": 1,
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "House"
+            },
+            "uncertainty": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Uncertainty"
+            },
+            "sampled_longitudes": {
+              "items": {
+                "type": "number"
+              },
+              "title": "Sampled Longitudes",
+              "type": "array"
+            },
+            "possible_signs": {
+              "items": {
+                "type": "string"
+              },
+              "title": "Possible Signs",
+              "type": "array"
+            }
+          },
+          "required": [
+            "body",
+            "longitude",
+            "sign",
+            "degree_in_sign"
+          ],
+          "title": "Position",
+          "type": "object"
+        }
+      },
+      "additionalProperties": false,
+      "properties": {
+        "success": {
+          "default": true,
+          "title": "Success",
+          "type": "boolean"
+        },
+        "calculation_mode": {
+          "const": "literal_no_timezone",
+          "default": "literal_no_timezone",
+          "title": "Calculation Mode",
+          "type": "string"
+        },
+        "input": {
+          "additionalProperties": true,
+          "title": "Input",
+          "type": "object"
+        },
+        "resolved_location": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Location"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "time_reference": {
+          "default": "supplied_clock_used_as_ut",
+          "title": "Time Reference",
+          "type": "string"
+        },
+        "precision_status": {
+          "default": "civil_time_not_utc_verified",
+          "title": "Precision Status",
+          "type": "string"
+        },
+        "engine": {
+          "default": "Swiss Ephemeris",
+          "title": "Engine",
+          "type": "string"
+        },
+        "engine_version": {
+          "title": "Engine Version",
+          "type": "string"
+        },
+        "ephemeris_source": {
+          "default": "not_used",
+          "title": "Ephemeris Source",
+          "type": "string"
+        },
+        "zodiac": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Zodiac"
+        },
+        "house_system": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "House System"
+        },
+        "positions": {
+          "items": {
+            "$ref": "#/$defs/Position"
+          },
+          "title": "Positions",
+          "type": "array"
+        },
+        "houses": {
+          "items": {
+            "$ref": "#/$defs/House"
+          },
+          "title": "Houses",
+          "type": "array"
+        },
+        "angles": {
+          "additionalProperties": {
+            "$ref": "#/$defs/Position"
+          },
+          "title": "Angles",
+          "type": "object"
+        },
+        "aspects": {
+          "items": {
+            "$ref": "#/$defs/Aspect"
+          },
+          "title": "Aspects",
+          "type": "array"
+        },
+        "warnings": {
+          "items": {
+            "$ref": "#/$defs/Issue"
+          },
+          "title": "Warnings",
+          "type": "array"
+        },
+        "errors": {
+          "items": {
+            "$ref": "#/$defs/Issue"
+          },
+          "title": "Errors",
+          "type": "array"
+        },
+        "candidates": {
+          "items": {
+            "$ref": "#/$defs/Location"
+          },
+          "title": "Candidates",
+          "type": "array"
+        },
+        "ambiguous": {
+          "default": false,
+          "title": "Ambiguous",
+          "type": "boolean"
+        },
+        "julian_day": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Julian Day"
+        },
+        "effective_clock": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Effective Clock"
+        },
+        "source_url": {
+          "default": "/source",
+          "title": "Source Url",
+          "type": "string"
+        }
+      },
+      "required": [
+        "input",
+        "engine_version"
+      ],
+      "title": "Result",
+      "type": "object"
+    },
+    "annotations": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
+    }
+  }
+]

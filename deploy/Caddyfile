@@ -1,0 +1,27 @@
+mcp.smartstudio.dev {
+    header Strict-Transport-Security "max-age=31536000"
+    request_body {
+        max_size 32KB
+    }
+    reverse_proxy 127.0.0.1:4100 {
+        header_up Host mcp.smartstudio.dev
+        transport http {
+            dial_timeout 3s
+            response_header_timeout 20s
+        }
+    }
+}
+
+mcp-demo.smartstudio.dev {
+    header X-Robots-Tag "noindex, nofollow, noarchive"
+    request_body {
+        max_size 32KB
+    }
+    reverse_proxy 127.0.0.1:4200 {
+        header_up Host mcp-demo.smartstudio.dev
+        transport http {
+            dial_timeout 3s
+            response_header_timeout 20s
+        }
+    }
+}

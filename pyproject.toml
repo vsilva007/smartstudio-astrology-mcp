@@ -1,0 +1,33 @@
+[build-system]
+requires = ["hatchling==1.29.0"]
+build-backend = "hatchling.build"
+
+[project]
+name = "smartstudio-astrology-mcp"
+version = "0.1.0"
+description = "Carta y Arcano: conventional literal-time astronomical calculations over MCP"
+requires-python = ">=3.11"
+license = "AGPL-3.0-only"
+authors = [{name = "Victor Silva (Smart Studio)"}]
+dependencies = [
+  "mcp==2.3.0", "pydantic==2.14.2", "pydantic-settings==2.16.2",
+  "pyswisseph==2.10.3.2", "uvicorn==0.54.0", "httpx==0.28.1",
+]
+
+[dependency-groups]
+dev = ["pytest==9.2.0", "ruff==0.17.3", "pip-audit==2.10.1", "pip-licenses==5.5.5"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/smartstudio_mcp"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+ignore = ["E501"]

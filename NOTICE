@@ -1,0 +1,23 @@
+Smart Studio Astrology MCP — Carta y Arcano
+Copyright (C) 2026 Victor Silva (Smart Studio)
+Original server and adapted plugin source: AGPL-3.0-only. No warranty.
+
+Uses PySwissEph 2.10.3.2 (AGPL-3.0-or-later) and its bundled Swiss Ephemeris
+2.10.03, under the AGPL v3 option of the upstream dual license.
+Original notices are preserved in legal/PYSWISSEPH-NOTICE.txt and
+legal/SWISSEPH-LICENSE.txt. Engine sources are included in the source offer.
+
+Ephemeris files are fetched from the official Swiss Ephemeris repository,
+pinned by revision and SHA-256 in data/ephemeris-manifest.json. They are not
+committed to this repository. The file headers identify DE441-derived data.
+See legal/AUDIT.md for the unresolved data redistribution review and public
+activation gate. Do not remove the original data headers or upstream notices.
+
+All runtime dependency license texts: legal/dependencies.json.
+Additional obligations and attributions: legal/THIRD-PARTY.md.
+Corresponding source is offered by /source and /source.tar.gz when prepared.
+Public hosting and repository publication are pending; no public URL is
+represented as already active. Every public release must serve its own source.
+
+No corporate website source is included. No endorsement by upstream authors
+is claimed. Astrology and tarot interpretations occur outside this server.

@@ -1,0 +1,452 @@
+{
+  "success": true,
+  "calculation_mode": "literal_no_timezone",
+  "input": {
+    "city": "Porto",
+    "country": "Portugal",
+    "birth_date": "1985-07-02",
+    "birth_time": "08:05",
+    "latitude": 41.1579,
+    "longitude": -8.6291,
+    "time_precision": "exact"
+  },
+  "resolved_location": {
+    "city": "Porto",
+    "country": "Portugal",
+    "region": null,
+    "latitude": 41.1579,
+    "longitude": -8.6291,
+    "source": "user_supplied",
+    "confidence": "user_supplied",
+    "ambiguous": false
+  },
+  "time_reference": "supplied_clock_used_as_ut",
+  "precision_status": "civil_time_not_utc_verified",
+  "engine": "Swiss Ephemeris",
+  "engine_version": "2.10.03",
+  "ephemeris_source": "swiss_files:sha256:a33ad7686a5ff4036442d5a26d09d5f801ddff8bce7ad6da2a4b83cfd61ff283",
+  "zodiac": "tropical",
+  "house_system": "Placidus",
+  "positions": [
+    {
+      "body": "Sun",
+      "longitude": 100.38444140592415,
+      "latitude": -0.00014479706236901133,
+      "sign": "Cancer",
+      "degree_in_sign": 10.38444140592415,
+      "speed_longitude": 0.9530672239984588,
+      "retrograde": false,
+      "house": 11,
+      "uncertainty": null,
+      "sampled_longitudes": [],
+      "possible_signs": []
+    },
+    {
+      "body": "Moon",
+      "longitude": 278.1498783641867,
+      "latitude": -3.9821186170763547,
+      "sign": "Capricorn",
+      "degree_in_sign": 8.14987836418669,
+      "speed_longitude": 14.197310794553113,
+      "retrograde": false,
+      "house": 5,
+      "uncertainty": null,
+      "sampled_longitudes": [],
+      "possible_signs": []
+    },
+    {
+      "body": "Mercury",
+      "longitude": 123.81383165716612,
+      "latitude": 1.3382847043742434,
+      "sign": "Leo",
+      "degree_in_sign": 3.8138316571661193,
+      "speed_longitude": 1.463654927141875,
+      "retrograde": false,
+      "house": 12,
+      "uncertainty": null,
+      "sampled_longitudes": [],
+      "possible_signs": []
+    },
+    {
+      "body": "Venus",
+      "longitude": 55.74819542124948,
+      "latitude": -2.8356742890435314,
+      "sign": "Taurus",
+      "degree_in_sign": 25.748195421249477,
+      "speed_longitude": 1.0561416544396893,
+      "retrograde": false,
+      "house": 10,
+      "uncertainty": null,
+      "sampled_longitudes": [],
+      "possible_signs": []
+    },
+    {
+      "body": "Mars",
+      "longitude": 105.1383129133876,
+      "latitude": 0.9713082583095421,
+      "sign": "Cancer",
+      "degree_in_sign": 15.138312913387594,
+      "speed_longitude": 0.6555491148679801,
+      "retrograde": false,
+      "house": 11,
+      "uncertainty": null,
+      "sampled_longitudes": [],
+      "possible_signs": []
+    },
+    {
+      "body": "Jupiter",
+      "longitude": 315.79525781618634,
+      "latitude": -0.7573531122200979,
+      "sign": "Aquarius",
+      "degree_in_sign": 15.795257816186336,
+      "speed_longitude": -0.08237955811156085,
+      "retrograde": true,
+      "house": 7,
+      "uncertainty": null,
+      "sampled_longitudes": [],
+      "possible_signs": []
+    },
+    {
+      "body": "Saturn",
+      "longitude": 231.90610752334533,
+      "latitude": 2.249931321958264,
+      "sign": "Scorpio",
+      "degree_in_sign": 21.906107523345327,
+      "speed_longitude": -0.03645058328252176,
+      "retrograde": true,
+      "house": 4,
+      "uncertainty": null,
+      "sampled_longitudes": [],
+      "possible_signs": []
+    },
+    {
+      "body": "Uranus",
+      "longitude": 254.98493055958366,
+      "latitude": -0.03270643356017136,
+      "sign": "Sagittarius",
+      "degree_in_sign": 14.98493055958366,
+      "speed_longitude": -0.035669566498021575,
+      "retrograde": true,
+      "house": 5,
+      "uncertainty": null,
+      "sampled_longitudes": [],
+      "possible_signs": []
+    },
+    {
+      "body": "Neptune",
+      "longitude": 272.01085584490227,
+      "latitude": 1.1615096979020207,
+      "sign": "Capricorn",
+      "degree_in_sign": 2.0108558449022667,
+      "speed_longitude": -0.026578308923612546,
+      "retrograde": true,
+      "house": 5,
+      "uncertainty": null,
+      "sampled_longitudes": [],
+      "possible_signs": []
+    },
+    {
+      "body": "Pluto",
+      "longitude": 211.95245665931006,
+      "latitude": 16.89616347599917,
+      "sign": "Scorpio",
+      "degree_in_sign": 1.9524566593100587,
+      "speed_longitude": -0.00553247122214556,
+      "retrograde": true,
+      "house": 3,
+      "uncertainty": null,
+      "sampled_longitudes": [],
+      "possible_signs": []
+    },
+    {
+      "body": "NorthNode",
+      "longitude": 45.493162160652126,
+      "latitude": 0,
+      "sign": "Taurus",
+      "degree_in_sign": 15.493162160652126,
+      "speed_longitude": -0.052900823793948046,
+      "retrograde": true,
+      "house": 10,
+      "uncertainty": null,
+      "sampled_longitudes": [],
+      "possible_signs": []
+    },
+    {
+      "body": "SouthNode",
+      "longitude": 225.49316216065213,
+      "latitude": 0,
+      "sign": "Scorpio",
+      "degree_in_sign": 15.493162160652133,
+      "speed_longitude": -0.052900823793948046,
+      "retrograde": true,
+      "house": 4,
+      "uncertainty": null,
+      "sampled_longitudes": [],
+      "possible_signs": []
+    }
+  ],
+  "houses": [
+    {
+      "number": 1,
+      "longitude": 135.2430784928763,
+      "sign": "Leo",
+      "degree_in_sign": 15.243078492876293
+    },
+    {
+      "number": 2,
+      "longitude": 156.55149780060668,
+      "sign": "Virgo",
+      "degree_in_sign": 6.551497800606683
+    },
+    {
+      "number": 3,
+      "longitude": 182.83442156896825,
+      "sign": "Libra",
+      "degree_in_sign": 2.834421568968253
+    },
+    {
+      "number": 4,
+      "longitude": 215.21916081242557,
+      "sign": "Scorpio",
+      "degree_in_sign": 5.219160812425571
+    },
+    {
+      "number": 5,
+      "longitude": 251.42143730563114,
+      "sign": "Sagittarius",
+      "degree_in_sign": 11.421437305631144
+    },
+    {
+      "number": 6,
+      "longitude": 285.75290899456377,
+      "sign": "Capricorn",
+      "degree_in_sign": 15.752908994563768
+    },
+    {
+      "number": 7,
+      "longitude": 315.2430784928763,
+      "sign": "Aquarius",
+      "degree_in_sign": 15.243078492876293
+    },
+    {
+      "number": 8,
+      "longitude": 336.5514978006067,
+      "sign": "Pisces",
+      "degree_in_sign": 6.551497800606683
+    },
+    {
+      "number": 9,
+      "longitude": 2.834421568968253,
+      "sign": "Aries",
+      "degree_in_sign": 2.834421568968253
+    },
+    {
+      "number": 10,
+      "longitude": 35.219160812425564,
+      "sign": "Taurus",
+      "degree_in_sign": 5.219160812425564
+    },
+    {
+      "number": 11,
+      "longitude": 71.42143730563114,
+      "sign": "Gemini",
+      "degree_in_sign": 11.421437305631144
+    },
+    {
+      "number": 12,
+      "longitude": 105.75290899456375,
+      "sign": "Cancer",
+      "degree_in_sign": 15.752908994563754
+    }
+  ],
+  "angles": {
+    "Ascendant": {
+      "body": "Ascendant",
+      "longitude": 135.2430784928763,
+      "latitude": 0,
+      "sign": "Leo",
+      "degree_in_sign": 15.243078492876293,
+      "speed_longitude": null,
+      "retrograde": null,
+      "house": null,
+      "uncertainty": null,
+      "sampled_longitudes": [],
+      "possible_signs": []
+    },
+    "Midheaven": {
+      "body": "Midheaven",
+      "longitude": 35.219160812425564,
+      "latitude": 0,
+      "sign": "Taurus",
+      "degree_in_sign": 5.219160812425564,
+      "speed_longitude": null,
+      "retrograde": null,
+      "house": null,
+      "uncertainty": null,
+      "sampled_longitudes": [],
+      "possible_signs": []
+    }
+  },
+  "aspects": [
+    {
+      "body1": "Jupiter",
+      "body2": "NorthNode",
+      "aspect": "square",
+      "exact_angle": 90,
+      "separation": 89.69790434446577,
+      "orb": 0.3020956555342309,
+      "allowed_orb": 6
+    },
+    {
+      "body1": "Jupiter",
+      "body2": "SouthNode",
+      "aspect": "square",
+      "exact_angle": 90,
+      "separation": 90.30209565553423,
+      "orb": 0.3020956555342309,
+      "allowed_orb": 6
+    },
+    {
+      "body1": "Jupiter",
+      "body2": "Uranus",
+      "aspect": "sextile",
+      "exact_angle": 60,
+      "separation": 60.810327256602676,
+      "orb": 0.810327256602676,
+      "allowed_orb": 4
+    },
+    {
+      "body1": "Mars",
+      "body2": "Moon",
+      "aspect": "opposition",
+      "exact_angle": 180,
+      "separation": 173.01156545079908,
+      "orb": 6.9884345492009174,
+      "allowed_orb": 8
+    },
+    {
+      "body1": "Mars",
+      "body2": "NorthNode",
+      "aspect": "sextile",
+      "exact_angle": 60,
+      "separation": 59.645150752735475,
+      "orb": 0.35484924726452505,
+      "allowed_orb": 4
+    },
+    {
+      "body1": "Mars",
+      "body2": "SouthNode",
+      "aspect": "trine",
+      "exact_angle": 120,
+      "separation": 120.35484924726454,
+      "orb": 0.35484924726453926,
+      "allowed_orb": 6
+    },
+    {
+      "body1": "Mars",
+      "body2": "Sun",
+      "aspect": "conjunction",
+      "exact_angle": 0,
+      "separation": 4.75387150746343,
+      "orb": 4.75387150746343,
+      "allowed_orb": 8
+    },
+    {
+      "body1": "Mercury",
+      "body2": "Pluto",
+      "aspect": "square",
+      "exact_angle": 90,
+      "separation": 88.13862500214394,
+      "orb": 1.8613749978560605,
+      "allowed_orb": 6
+    },
+    {
+      "body1": "Moon",
+      "body2": "Neptune",
+      "aspect": "conjunction",
+      "exact_angle": 0,
+      "separation": 6.139022519284424,
+      "orb": 6.139022519284424,
+      "allowed_orb": 8
+    },
+    {
+      "body1": "Moon",
+      "body2": "Sun",
+      "aspect": "opposition",
+      "exact_angle": 180,
+      "separation": 177.7654369582625,
+      "orb": 2.2345630417374878,
+      "allowed_orb": 8
+    },
+    {
+      "body1": "Neptune",
+      "body2": "Pluto",
+      "aspect": "sextile",
+      "exact_angle": 60,
+      "separation": 60.05839918559221,
+      "orb": 0.058399185592207914,
+      "allowed_orb": 4
+    },
+    {
+      "body1": "NorthNode",
+      "body2": "Saturn",
+      "aspect": "opposition",
+      "exact_angle": 180,
+      "separation": 173.58705463730678,
+      "orb": 6.412945362693222,
+      "allowed_orb": 8
+    },
+    {
+      "body1": "NorthNode",
+      "body2": "SouthNode",
+      "aspect": "opposition",
+      "exact_angle": 180,
+      "separation": 180,
+      "orb": 0,
+      "allowed_orb": 8
+    },
+    {
+      "body1": "Saturn",
+      "body2": "SouthNode",
+      "aspect": "conjunction",
+      "exact_angle": 0,
+      "separation": 6.412945362693193,
+      "orb": 6.412945362693193,
+      "allowed_orb": 8
+    },
+    {
+      "body1": "Saturn",
+      "body2": "Venus",
+      "aspect": "opposition",
+      "exact_angle": 180,
+      "separation": 176.15791210209585,
+      "orb": 3.8420878979041504,
+      "allowed_orb": 8
+    },
+    {
+      "body1": "SouthNode",
+      "body2": "Sun",
+      "aspect": "trine",
+      "exact_angle": 120,
+      "separation": 125.10872075472798,
+      "orb": 5.108720754727983,
+      "allowed_orb": 6
+    }
+  ],
+  "warnings": [
+    {
+      "code": "UNVERIFIED_TIME_REFERENCE",
+      "message": "Literal supplied date and clock used as conventional UT; no civil-to-UTC, DST or longitude correction. Results are not verified astronomical positions for the real birth instant."
+    },
+    {
+      "code": "HOUSE_ASSIGNMENT_CONVENTION",
+      "message": "Planet houses use zodiacal longitude cusp intervals, ignoring ecliptic latitude."
+    }
+  ],
+  "errors": [],
+  "candidates": [],
+  "ambiguous": false,
+  "julian_day": 2446248.8368055555,
+  "effective_clock": "08:05",
+  "source_url": "/source"
+}

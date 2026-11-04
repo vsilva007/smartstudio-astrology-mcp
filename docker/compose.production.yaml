@@ -1,0 +1,8 @@
+services:
+  mcp:
+    image: ${DEPLOY_IMAGE:?required}
+    container_name: ${PROJECT_NAME:?required}-production
+    ports:
+      - "127.0.0.1:${HOST_PORT:?required}:${CONTAINER_PORT:?required}"
+    environment:
+      CARTA_ENVIRONMENT: production

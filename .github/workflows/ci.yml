@@ -1,0 +1,56 @@
+name: verify
+on: [push, pull_request, workflow_dispatch]
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ["3.11", "3.12", "3.14"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - run: python -m pip install uv==0.13.7
+      - run: uv sync --frozen
+      - run: uv run python scripts/fetch_ephemeris.py
+      - run: uv run ruff check src tests scripts
+      - run: uv run ruff format --check src tests scripts
+      - run: uv run pytest -q --junitxml=artifacts/tests.xml
+      - run: uv run python scripts/export_schemas.py --check
+      - run: uv run pip-audit -r requirements.lock --require-hashes --disable-pip --no-deps
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: tests-${{ matrix.python }}
+          path: artifacts/tests.xml
+  image:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version-file: .python-version
+      - name: Configure private loopback installations
+        run: |
+          python - <<'PY'
+          import os
+          from pathlib import Path
+          os.umask(0o077)
+          for environment, port in [('production', 14100), ('demo', 14200)]:
+              values = dict(line.split('=', 1) for line in Path(f'.env.{environment}.example').read_text().splitlines() if line and not line.startswith('#'))
+              values.update(PROJECT_NAME='smartstudio-ci', HOST_PORT=str(port), LOCAL_TEST_ONLY='true', PUBLIC_ORIGIN=f'http://127.0.0.1:{port}', CANONICAL_ORIGIN=f'http://127.0.0.1:{port}', RATE_PER_MINUTE='600', GLOBAL_RATE_PER_MINUTE='6000')
+              Path(f'.env.{environment}').write_text(''.join(f'{k}={v}\n' for k, v in values.items()))
+          PY
+      - run: ./scripts/deploy.sh local --env production --build
+      - run: ./scripts/deploy.sh build --env demo
+      - run: ./scripts/verify/verify-isolation.sh --env demo
+      - run: ./scripts/deploy.sh package --env demo --output /tmp/smartstudio-ci-demo.tar.gz
+      - name: Stop only CI installations
+        if: always()
+        run: |
+          docker rm -f smartstudio-ci-demo smartstudio-ci-production || true
+          docker network rm smartstudio-ci-demo-network smartstudio-ci-production-network || true

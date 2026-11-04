@@ -1,0 +1,44 @@
+services:
+  mcp:
+    init: true
+    user: "1000:1000"
+    read_only: true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=32m
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    restart: unless-stopped
+    stop_grace_period: 15s
+    pids_limit: 128
+    mem_limit: ${MEMORY_LIMIT:?required}
+    cpus: 1.0
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+    labels:
+      dev.smartstudio.project: ${PROJECT_NAME:?required}
+      dev.smartstudio.environment: ${DEPLOY_ENV:?required}
+      org.opencontainers.image.revision: ${RELEASE_REVISION:?required}
+    environment:
+      CARTA_ALLOWED_HOSTS: ${ALLOWED_HOSTS_JSON:?required}
+      CARTA_ALLOWED_ORIGINS: ${ALLOWED_ORIGINS_JSON:?required}
+      CARTA_PUBLIC_ORIGIN: ${PUBLIC_ORIGIN:?required}
+      CARTA_CANONICAL_ORIGIN: ${CANONICAL_ORIGIN:?required}
+      CARTA_SOURCE_URL: ${SOURCE_URL:?required}
+      CARTA_RELEASE_REVISION: ${RELEASE_REVISION:?required}
+      CARTA_LICENSE_REVIEW_APPROVED: ${LICENSE_REVIEW_APPROVED:?required}
+      CARTA_LOCAL_TEST_ONLY: ${LOCAL_TEST_ONLY:?required}
+      CARTA_METRICS_TOKEN: ${METRICS_TOKEN:-}
+      CARTA_OPENAI_CHALLENGE_TOKEN: ${OPENAI_CHALLENGE_TOKEN:-}
+      CARTA_RATE_PER_MINUTE: ${RATE_PER_MINUTE:?required}
+      CARTA_GLOBAL_RATE_PER_MINUTE: ${GLOBAL_RATE_PER_MINUTE:?required}
+      CARTA_GEOCODER: ${GEOCODER:?required}
+      CARTA_GEOCODER_URL: ${GEOCODER_URL:-}
+networks:
+  default:
+    name: ${PROJECT_NAME:?required}-${DEPLOY_ENV:?required}-network
+    labels:
+      dev.smartstudio.project: ${PROJECT_NAME:?required}
+      dev.smartstudio.environment: ${DEPLOY_ENV:?required}

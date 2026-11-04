@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.1.0 — 2026-11-03 — sin publicar
+## 0.1.0 — 2026-11-03
 
 - Despliegue sin registro por imágenes versionadas, paquetes privados y SSH estricto.
 - Instalaciones Compose independientes de producción/demo, confirmación funcional,

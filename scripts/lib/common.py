@@ -358,7 +358,10 @@ class Deployment:
             require(shutil.which(executable), f"Missing required command: {executable}")
         command(["docker", "info"])
         version = command(["docker", "compose", "version", "--short"]).stdout.strip().lstrip("v")
-        require(version.split(".")[0] == "2", "Docker Compose v2 is required")
+        require(
+            version.split(".")[0] == "2",
+            f"Docker Compose v2 is required; detected {version}. Use a runner/host with Compose v2.",
+        )
 
     def image_info(self, reference, required=True):
         result = command(["docker", "image", "inspect", reference], check=False)

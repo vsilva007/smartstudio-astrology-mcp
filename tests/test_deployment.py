@@ -242,6 +242,28 @@ def test_build_failure_cannot_deploy(tmp_path, monkeypatch):
         deployment.main(["local", "--env", "demo", "--build"], root=tmp_path)
 
 
+@pytest.mark.parametrize("version", ["2.38.2", "v5.1.3"])
+def test_required_compose_major_reports_installed_version(tmp_path, monkeypatch, version):
+    config_file(tmp_path)
+    app = deployment.Deployment(tmp_path, "demo")
+    monkeypatch.setattr(deployment.shutil, "which", lambda name: "/usr/bin/" + name)
+    monkeypatch.setattr(
+        deployment,
+        "command",
+        lambda args: subprocess.CompletedProcess(
+            args,
+            0,
+            version + "\n" if args == ["docker", "compose", "version", "--short"] else "",
+            "",
+        ),
+    )
+    if version.startswith("v5"):
+        with pytest.raises(deployment.Failure, match=r"detected 5\.1\.3"):
+            app.requirements()
+    else:
+        app.requirements()
+
+
 def test_compose_ignores_ambient_dotenv_and_variables(tmp_path, monkeypatch):
     config_file(tmp_path)
     app = deployment.Deployment(tmp_path, "demo")

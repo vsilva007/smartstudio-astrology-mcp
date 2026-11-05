@@ -212,6 +212,14 @@ en loopback con Python exacto de `.python-version`, verifica aislamiento y gener
 un paquete. No publica imágenes ni activa servicios públicos. El job limpia solo
 sus propios contenedores/redes. Resultados locales: `docs/deployment/VERIFICATION.md`.
 
+Los jobs usan explícitamente `ubuntu-24.04`, cuya imagen incluye Docker Compose
+v2. La migración de `ubuntu-latest` a Ubuntu 26.04 introduce Compose v5, que no
+cumple el requisito actual del despliegue. Las acciones checkout/setup-python/
+upload-artifact utilizan versiones con Node 24. El job de imagen muestra las
+versiones de Python, Docker y Compose antes de compilar.
+Referencias: [Ubuntu 24.04](https://github.com/actions/runner-images/blob/main/images/ubuntu/Ubuntu2404-Readme.md)
+y [Ubuntu 26.04](https://github.com/actions/runner-images/blob/main/images/ubuntu/Ubuntu2604-Readme.md).
+
 ## Persistencia, privacidad y reproducibilidad
 
 El servicio no guarda cartas ni necesita volúmenes. No hay base de datos ni

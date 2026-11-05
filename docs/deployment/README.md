@@ -207,10 +207,10 @@ de producción antes/después. Comprueba redes disjuntas, UID 1000, read-only,
 sin bind mounts/volúmenes, límite de recursos y puerto loopback correcto.
 No ejecutes esta prueba contra instalaciones que no estés autorizado a operar.
 
-CI ejecuta la suite en Python 3.11/3.12/3.14 y construye/despliega ambas imágenes
-en loopback con Python exacto de `.python-version`, verifica aislamiento y genera
-un paquete. No publica imágenes ni activa servicios públicos. El job limpia solo
-sus propios contenedores/redes. Resultados locales: `docs/deployment/VERIFICATION.md`.
+CI ejecuta la suite en Python 3.11/3.12/3.14 y construye ambas imágenes
+con Python exacto de `.python-version`. No despliega, publica imágenes ni genera
+paquetes de instalación. La verificación de aislamiento se ejecuta manualmente
+fuera de GitHub Actions. Resultados locales: `docs/deployment/VERIFICATION.md`.
 
 Los jobs usan explícitamente `ubuntu-24.04`, cuya imagen incluye Docker Compose
 v2. La migración de `ubuntu-latest` a Ubuntu 26.04 introduce Compose v5, que no

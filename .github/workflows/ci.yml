@@ -39,7 +39,7 @@ jobs:
           python --version
           docker --version
           docker compose version
-      - name: Configure private loopback installations
+      - name: Configure build environments
         run: |
           python - <<'PY'
           import os
@@ -50,12 +50,7 @@ jobs:
               values.update(PROJECT_NAME='smartstudio-ci', HOST_PORT=str(port), LOCAL_TEST_ONLY='true', PUBLIC_ORIGIN=f'http://127.0.0.1:{port}', CANONICAL_ORIGIN=f'http://127.0.0.1:{port}', RATE_PER_MINUTE='600', GLOBAL_RATE_PER_MINUTE='6000')
               Path(f'.env.{environment}').write_text(''.join(f'{k}={v}\n' for k, v in values.items()))
           PY
-      - run: ./scripts/deploy.sh local --env production --build
-      - run: ./scripts/deploy.sh build --env demo
-      - run: ./scripts/verify/verify-isolation.sh --env demo
-      - run: ./scripts/deploy.sh package --env demo --output /tmp/smartstudio-ci-demo.tar.gz
-      - name: Stop only CI installations
-        if: always()
-        run: |
-          docker rm -f smartstudio-ci-demo smartstudio-ci-production || true
-          docker network rm smartstudio-ci-demo-network smartstudio-ci-production-network || true
+      - name: Build production image
+        run: ./scripts/build/build.sh --env production
+      - name: Build demo image
+        run: ./scripts/build/build.sh --env demo

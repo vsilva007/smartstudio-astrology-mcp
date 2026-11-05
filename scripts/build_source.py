@@ -64,7 +64,6 @@ for name in [
     "README.md",
     "CHANGELOG.md",
     "CONTRIBUTING.md",
-    "SECURITY.md",
     "data/ephemeris-manifest.json",
 ]:
     files[name] = (root / name).read_bytes()

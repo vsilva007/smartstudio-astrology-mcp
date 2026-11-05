@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="380" viewBox="0 0 1200 380" fill="none" role="img" aria-labelledby="title desc">
+  <title id="title">Smart Studio Astrology MCP</title>
+  <desc id="desc">Carta y Arcano. Cálculo astronómico y datos trazables sobre un cielo oscuro con órbitas violetas y turquesas.</desc>
+  <defs>
+    <linearGradient id="background" x2="1" y2="1"><stop stop-color="#10172B"/><stop offset="1" stop-color="#17122E"/></linearGradient>
+    <linearGradient id="orbit" x2="1" y2="1"><stop stop-color="#A78BFA"/><stop offset="1" stop-color="#5EEAD4"/></linearGradient>
+    <radialGradient id="glow"><stop stop-color="#A78BFA" stop-opacity=".18"/><stop offset="1" stop-color="#A78BFA" stop-opacity="0"/></radialGradient>
+  </defs>
+  <rect width="1200" height="380" rx="24" fill="url(#background)"/>
+  <rect x=".5" y=".5" width="1199" height="379" rx="23.5" stroke="#A78BFA" stroke-opacity=".18"/>
+  <circle cx="950" cy="190" r="190" fill="url(#glow)"/>
+  <g fill="#CBD5E1" opacity=".5">
+    <circle cx="720" cy="55" r="1.5"/><circle cx="1140" cy="78" r="2"/>
+    <circle cx="1100" cy="310" r="1.5"/><circle cx="780" cy="320" r="2"/>
+    <circle cx="690" cy="267" r="1.5"/><circle cx="1050" cy="37" r="1"/>
+    <circle cx="1160" cy="228" r="1"/><circle cx="840" cy="66" r="1"/>
+  </g>
+  <g transform="translate(950 190)" stroke="url(#orbit)">
+    <circle r="137" stroke-opacity=".45"/>
+    <circle r="110" stroke-opacity=".2" stroke-dasharray="3 9"/>
+    <circle r="68" stroke-opacity=".45"/>
+    <ellipse rx="164" ry="51" transform="rotate(-32)" stroke-width="1.5"/>
+    <path d="M-148 0H148M0-148V148" stroke="#A78BFA" stroke-opacity=".15"/>
+    <path d="M0-28 7-7 28 0 7 7 0 28-7 7-28 0-7-7Z" fill="#DDD6FE" stroke="none"/>
+    <circle cx="-117" cy="-71" r="7" fill="#A78BFA" stroke="none"/>
+    <circle cx="107" cy="86" r="5" fill="#5EEAD4" stroke="none"/>
+    <circle cx="-49" cy="47" r="4" fill="#E2E8F0" stroke="none"/>
+  </g>
+  <g font-family="Arial, Helvetica, sans-serif">
+    <text x="64" y="73" fill="#5EEAD4" font-size="13" font-weight="700" letter-spacing="4">SMART STUDIO / CARTA Y ARCANO</text>
+    <text x="60" y="158" fill="#F8FAFC" font-size="64" font-weight="700" letter-spacing="-2">Astrology MCP</text>
+    <text x="64" y="205" fill="#CBD5E1" font-size="21">Cálculo astronómico. Datos trazables.</text>
+    <text x="64" y="236" fill="#CBD5E1" font-size="21">Herramientas listas para conectar.</text>
+    <g font-size="12" font-weight="700" letter-spacing="1">
+      <rect x="64" y="282" width="150" height="32" rx="16" fill="#A78BFA" fill-opacity=".12" stroke="#A78BFA" stroke-opacity=".3"/>
+      <text x="139" y="303" fill="#DDD6FE" text-anchor="middle">SWISS EPHEMERIS</text>
+      <rect x="226" y="282" width="150" height="32" rx="16" fill="#5EEAD4" fill-opacity=".08" stroke="#5EEAD4" stroke-opacity=".25"/>
+      <text x="301" y="303" fill="#99F6E4" text-anchor="middle">STREAMABLE HTTP</text>
+      <rect x="388" y="282" width="112" height="32" rx="16" fill="#CBD5E1" fill-opacity=".06" stroke="#CBD5E1" stroke-opacity=".2"/>
+      <text x="444" y="303" fill="#E2E8F0" text-anchor="middle">AGPL-3.0</text>
+    </g>
+  </g>
+</svg>
